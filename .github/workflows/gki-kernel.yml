@@ -183,11 +183,7 @@ jobs:
           if [[ "${{ inputs.kernelsu_branch }}" == "Stable" && ( "${{ inputs.kernelsu_variant }}" == "SukiSU" ) ]]; then
               echo "BRANCH=-s susfs-main" >> $GITHUB_ENV
           elif [[ "${{ inputs.kernelsu_branch }}" == "Dev" && ( "${{ inputs.kernelsu_variant }}" == "SukiSU" ) ]]; then
-              if [[ "${{ inputs.kernel_version }}" == "6.1" ]]; then
-                  echo "BRANCH=-s susfs-1.5.8" >> $GITHUB_ENV
-              else
-                  echo "BRANCH=-s susfs-test" >> $GITHUB_ENV
-              fi
+              echo "BRANCH=-s susfs-test" >> $GITHUB_ENV
           elif [[ "${{ inputs.kernelsu_branch }}" == "Other" && -n "${{ inputs.kernelsu_branch_other }}" ]]; then
             echo "BRANCH=-s ${{ inputs.kernelsu_branch_other }}" >> $GITHUB_ENV
           else
@@ -386,9 +382,9 @@ jobs:
           # CURRENT_TIME=$(date -u +"%a %b %d %H:%M:%S UTC %Y")
           # echo "CURRENT_TIME=$CURRENT_TIME"
           # perl -pi -e "s{UTS_VERSION=\"\\\$\(echo \\\$UTS_VERSION \\\$CONFIG_FLAGS \\\$TIMESTAMP \\| cut -b -\\\$UTS_LEN\)\"}{UTS_VERSION=\"#1 SMP PREEMPT $CURRENT_TIME\"}" ./common/scripts/mkcompile_h
-          perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Sun Apr 20 04:20:00 UTC 2025"}' ./common/scripts/mkcompile_h
+          perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Wed Mar 12 13:40:07 UTC 2025"}' ./common/scripts/mkcompile_h
 
-          sed -i '$s|echo "\$res"|echo "\$res-gd7dac4b14270-ab12946699"|' ./common/scripts/setlocalversion
+          sed -i '$s|echo "\$res"|echo "\$res-g8d713f9e8e7b-ab13202960"|' ./common/scripts/setlocalversion
           if [ -f "build/build.sh" ]; then
             sed -i 's/-dirty//' ./common/scripts/setlocalversion
           else
