@@ -198,6 +198,8 @@ jobs:
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
             echo "Adding KernelSU SukiSU..."
             curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
+            cd KernelSU
+            git reset --hard 3404a4fea809d2ce2525d7e65c4847eb3ee4203a
           fi
 
       - name: Apply SUSFS Patches for KernelSU Variants
