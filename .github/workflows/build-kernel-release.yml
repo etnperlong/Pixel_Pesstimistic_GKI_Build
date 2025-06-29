@@ -376,5 +376,5 @@ jobs:
             -d "chat_id=-100$TELEGRAM_CHAT_ID" \
             -d "text=新推送 ${{ env.currentdate }}
           https://github.com/MiRinFork/GKI_SukiSU_SUSFS/releases/tag/${{ env.NEW_TAG }}
-          请在有另一台设备的情况下安装。
+          请在有另一台设备的情况下安装。此构建暂未经过测试。
             "
