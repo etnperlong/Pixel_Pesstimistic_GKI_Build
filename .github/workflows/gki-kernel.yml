@@ -184,7 +184,7 @@ jobs:
               echo "BRANCH=-s susfs-main" >> $GITHUB_ENV
           elif [[ "${{ inputs.kernelsu_branch }}" == "Dev" && ( "${{ inputs.kernelsu_variant }}" == "SukiSU" ) ]]; then
               if [[ "${{ inputs.kernel_version }}" == "5.10" ]]; then
-                  echo "BRANCH=-s susfs-1.5.7" >> $GITHUB_ENV
+                  echo "BRANCH=-s susfs-test" >> $GITHUB_ENV
               else
                   echo "BRANCH=-s susfs-test" >> $GITHUB_ENV
               fi
@@ -203,7 +203,7 @@ jobs:
             echo "Adding KernelSU SukiSU..."
             curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
             cd KernelSU
-            git revert -m 1 $(git log --grep="KernelSU: Fix sus mounts not umounted for iso service that" --pretty=format:"%h") -n || true
+            # git revert -m 1 $(git log --grep="KernelSU: Fix sus mounts not umounted for iso service that" --pretty=format:"%h") -n || true
           fi
 
       - name: Apply SUSFS Patches for KernelSU Variants
@@ -411,11 +411,16 @@ jobs:
 
           # Run perl command to modify UTS_VERSION
 
-          # CURRENT_TIME=$(date -u +"%a %b %d %H:%M:%S UTC %Y")
-          # echo "CURRENT_TIME=$CURRENT_TIME"
-          # perl -pi -e "s{UTS_VERSION=\"\\\$\(echo \\\$UTS_VERSION \\\$CONFIG_FLAGS \\\$TIMESTAMP \\| cut -b -\\\$UTS_LEN\)\"}{UTS_VERSION=\"#1 SMP PREEMPT $CURRENT_TIME\"}" ./common/scripts/mkcompile_h
-          perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Wed Mar 12 13:40:07 UTC 2025"}' ./common/scripts/mkcompile_h
+          CURRENT_TIME=$(date -u +"%a %b %d %H:%M:%S UTC %Y")
 
+          echo "CURRENT_TIME=$CURRENT_TIME"
+          perl -pi -e "s{UTS_VERSION=\"\\\$\(echo \\\$UTS_VERSION \\\$CONFIG_FLAGS \\\$TIMESTAMP \\| cut -b -\\\$UTS_LEN\)\"}{UTS_VERSION=\"#1 SMP PREEMPT $CURRENT_TIME\"}" ./common/scripts/mkcompile_h
+
+    
+          # perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Wed Mar 12 13:40:07 UTC 2025"}' ./common/scripts/mkcompile_h
+          # Apply specific Makefile modification for kernel versions 6.1 and 6.6 only
+          
+          
           sed -i '$s|echo "\$res"|echo "\$res-g8d713f9e8e7b-ab13202960"|' ./common/scripts/setlocalversion
           if [ -f "build/build.sh" ]; then
             sed -i 's/-dirty//' ./common/scripts/setlocalversion
@@ -438,10 +443,18 @@ jobs:
             set -x
             cd "$CONFIG"
             echo "Building the kernel..."
+            # replace BUILD_SYSTEM_DLKM=1 with BUILD_SYSTEM_DLKM=0
+            sed -i 's/BUILD_SYSTEM_DLKM=1/BUILD_SYSTEM_DLKM=0/' common/build.config.gki.aarch64
+            # del line MODULES_ORDER=android/gki_aarch64_modules 
+            sed -i '/MODULES_ORDER=android\/gki_aarch64_modules/d' common/build.config.gki.aarch64
+            sed -i '/KMI_SYMBOL_LIST_STRICT_MODE/d' common/build.config.gki.aarch64
+            
             if [ -f "build/build.sh" ]; then
-              LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
+              # LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
+              LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
             else
               # tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=full --copt=-Wno-error --copt=-mllvm --copt=-polly --copt=-mllvm --copt=-polly-vectorizer=stripmine --linkopt="-fuse-ld=lld" //common:kernel_aarch64_dist|| exit 1
+              # tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=thin //common:kernel_aarch64_dist || exit 1
               tools/bazel build --disk_cache=/home/runner/.cache/bazel --config=fast --lto=thin //common:kernel_aarch64_dist || exit 1
             fi
             ccache --show-stats
