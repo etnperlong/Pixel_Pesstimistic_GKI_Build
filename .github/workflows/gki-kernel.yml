@@ -200,9 +200,9 @@ jobs:
           echo "Changing to configuration directory: $CONFIG..."
           cd "$CONFIG"
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
-            echo "Adding KernelSU SukiSU..."
+            echo "Adding SukiSU..."
             curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
-            cd KernelSU
+            cd SukiSU-Ultra
             # git revert -m 1 $(git log --grep="KernelSU: Fix sus mounts not umounted for iso service that" --pretty=format:"%h") -n || true
           fi
 
@@ -220,7 +220,7 @@ jobs:
 
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
             echo "Applying SUSFS patches for SukiSU..."
-             cd ./KernelSU
+             cd ./SukiSU-Ultra
             
             
             echo "Applying SukiSU specific SUSFS patch..."
