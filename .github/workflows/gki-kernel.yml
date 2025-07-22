@@ -203,7 +203,7 @@ jobs:
             echo "Adding SukiSU..."
             curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
             cd KernelSU
-            # git revert -m 1 $(git log --grep="KernelSU: Fix sus mounts not umounted for iso service that" --pretty=format:"%h") -n || true
+            git revert -m 1 $(git log --grep="ksud: Add KSU_SUKISU to env" --pretty=format:"%h") -n || true
           fi
 
       - name: Apply SUSFS Patches for KernelSU Variants
