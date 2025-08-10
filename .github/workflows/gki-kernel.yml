@@ -204,6 +204,7 @@ jobs:
             curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
             cd KernelSU
             git revert -m 1 $(git log --grep="ksud: Add KSU_SUKISU to env" --pretty=format:"%h") -n || true
+            git revert -m 1 $(git log --grep="kernel: Handle unmount for isolated process correctly" --pretty=format:"%h") -n || true
           fi
 
       - name: Apply SUSFS Patches for KernelSU Variants
