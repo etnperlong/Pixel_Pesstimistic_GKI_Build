@@ -150,8 +150,8 @@ jobs:
       - build-kernel-a15-6-6
     if: ${{ inputs.make_release }}
     env:
-      REPO_OWNER: MiRinFork
-      REPO_NAME: GKI_SukiSU_SUSFS
+      REPO_OWNER: etnperlong
+      REPO_NAME: Pixel_Pesstimistic_GKI_Build
       GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
       # RELEASE_NAME: "GKI Kernels With KernelSU-${{ inputs.kernelsu_variant }} ${{ inputs.kernelsu_branch }} & SUSFS v1.5.7 *TEST BUILD*"
       RELEASE_NOTES: |
@@ -386,6 +386,6 @@ jobs:
           curl -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d "chat_id=-100$TELEGRAM_CHAT_ID" \
             -d "text=新推送 ${{ env.currentdate }}
-          https://github.com/MiRinFork/GKI_SukiSU_SUSFS/releases/tag/${{ env.NEW_TAG }}
+          https://github.com/etnperlong/Pixel_Pesstimistic_GKI_Build/releases/tag/${{ env.NEW_TAG }}
           请在有另一台设备的情况下安装。此构建暂未经过测试。
             "
