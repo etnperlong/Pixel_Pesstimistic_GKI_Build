@@ -19,6 +19,10 @@ on:
       kernelsu_branch_other:
         required: false
         type: string
+      patch_kernel:
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build-kernel-a14-5-15-kernelsu-susfs:
@@ -61,3 +65,4 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       kernelsu_branch_other: ${{ inputs.kernelsu_branch_other }}
+      patch_kernel: ${{ inputs.patch_kernel }}
