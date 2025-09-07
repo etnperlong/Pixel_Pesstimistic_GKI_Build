@@ -145,8 +145,8 @@ jobs:
           echo "Using branch for SUSFS: $SUSFS_BRANCH"
 
           # Clone repositories using the branch names
-          git clone https://github.com/ShirkNeko/susfs4ksu.git -b "$SUSFS_BRANCH"
-          git clone https://github.com/ShirkNeko/SukiSU_patch.git
+          git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
+          git clone https://github.com/SukiSU-Ultra/SukiSU_patch.git
           git clone https://github.com/MiRinChan/AnyKernel3.git
 
       - name: Set CONFIG Environment Variable
@@ -205,9 +205,9 @@ jobs:
           cd "$CONFIG"
           if [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
             echo "Adding SukiSU..."
-            curl -LSs "https://raw.githubusercontent.com/MiRinChan/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
+            curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash $BRANCH
             cd KernelSU
-            git revert -m 1 $(git log --grep="ksud: Add KSU_SUKISU to env" --pretty=format:"%h") -n || true
+            # git revert -m 1 $(git log --grep="ksud: Add KSU_SUKISU to env" --pretty=format:"%h") -n || true
             # git revert -m 1 $(git log --grep="kernel: Handle unmount for isolated process correctly" --pretty=format:"%h") -n || true
           fi
 
