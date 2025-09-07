@@ -426,15 +426,15 @@ jobs:
           # Apply specific Makefile modification for kernel versions 6.1 and 6.6 only
 
 
-          sed -i '$s|echo "\$res"|echo "\$res-g8d713f9e8e7b-ab13202960"|' ./common/scripts/setlocalversion
+          sed -i '$s|echo "\$res"|echo "\$res-Pessimistic"|' ./common/scripts/setlocalversion
           if [ -f "build/build.sh" ]; then
             sed -i 's/-dirty//' ./common/scripts/setlocalversion
           else
-            sed -i 's/build-timestamp = $(or $(KBUILD_BUILD_TIMESTAMP), $(build-timestamp-auto))/build-timestamp = "Sun Apr 20 04:20:00 UTC 2025"/' ./common/init/Makefile
+            sed -i "s/build-timestamp = \$(or \$(KBUILD_BUILD_TIMESTAMP), \$(build-timestamp-auto))/build-timestamp = \"$CURRENT_TIME\"/" ./common/init/Makefile
             sed -i '/^[[:space:]]*"protected_exports_list"[[:space:]]*:[[:space:]]*"android\/abi_gki_protected_exports_aarch64",$/d' ./common/BUILD.bazel
             rm -rf ./common/android/abi_gki_protected_exports_*
             sed -i "/stable_scmversion_cmd/s/-maybe-dirty//g" ./build/kernel/kleaf/impl/stamp.bzl
-            sed -E -i "/^CONFIG_LOCALVERSION=/ s/(.*)\"/\\1-gd7dac4b14270-ab12946699\"/" ./common/arch/arm64/configs/gki_defconfig
+            sed -E -i "/^CONFIG_LOCALVERSION=/ s/(.*)\"/\\1-Pessimistic\"/" ./common/arch/arm64/configs/gki_defconfig
           fi
 
       - name: Build with retry
