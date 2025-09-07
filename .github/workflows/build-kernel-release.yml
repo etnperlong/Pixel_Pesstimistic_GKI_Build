@@ -152,7 +152,6 @@ jobs:
     env:
       REPO_OWNER: etnperlong
       REPO_NAME: Pixel_Pesstimistic_GKI_Build
-      GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
       # RELEASE_NAME: "GKI Kernels With KernelSU-${{ inputs.kernelsu_variant }} ${{ inputs.kernelsu_branch }} & SUSFS v1.5.7 *TEST BUILD*"
       RELEASE_NOTES: |
         > [!CAUTION]
@@ -314,8 +313,6 @@ jobs:
 
       # Get the Latest Tag from GitHub
       - name: Generate and Create New Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           # Fetch the latest tag from GitHub (this is the latest tag based on the GitHub API)
           LATEST_TAG=$(gh api repos/$REPO_OWNER/$REPO_NAME/tags --jq '.[0].name')
