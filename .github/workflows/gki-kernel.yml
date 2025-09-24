@@ -309,7 +309,7 @@ jobs:
           echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
 
           # Add KPM configuration settings
-          if ["{{ inputs.patch_kernel }}" = "true" ]; then
+          if ["${{ inputs.patch_kernel }}" = "true" ]; then
             echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
           else
             echo "CONFIG_KPM=n" >> ./common/arch/arm64/configs/gki_defconfig
