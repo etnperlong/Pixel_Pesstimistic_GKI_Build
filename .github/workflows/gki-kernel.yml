@@ -382,16 +382,16 @@ jobs:
           # Remove check_defconfig
           sed -i 's/check_defconfig//' ./common/build.config.gki
 
-      - name: Restore Bazel Cache
-        uses: actions/cache/restore@v4
-        with:
-          path: /home/runner/.cache/bazel
-          key: bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-${{ github.sha }}
-          restore-keys: |
-            bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-
-            bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-
-            bazel-cache-${{ inputs.android_version }}-
-            bazel-cache-
+      # - name: Restore Bazel Cache
+      #   uses: actions/cache/restore@v4
+      #   with:
+      #     path: /home/runner/.cache/bazel
+      #     key: bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-${{ github.sha }}
+      #     restore-keys: |
+      #       bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-
+      #       bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-
+      #       bazel-cache-${{ inputs.android_version }}-
+      #       bazel-cache-
 
       - name: Config Kernel Name
         run: |
@@ -501,9 +501,9 @@ jobs:
             *.zip
             *.img
 
-      - name: Save Bazel Cache
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: /home/runner/.cache/bazel
-          key: bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-${{ github.sha }}
+      # - name: Save Bazel Cache
+      #   uses: actions/cache/save@v4
+      #   if: always()
+      #   with:
+      #     path: /home/runner/.cache/bazel
+      #     key: bazel-cache-${{ inputs.android_version }}-${{ inputs.kernel_version }}-${{ inputs.sub_level }}-${{ github.sha }}
